@@ -1,0 +1,5 @@
+# One Heroku app name per line. Lines starting with # are ignored.
+# Example:
+# my-n8n-production
+# my-n8n-staging
+n8n-dansys-test-sandbox

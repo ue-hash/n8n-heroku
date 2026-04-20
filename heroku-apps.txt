@@ -1,5 +1,5 @@
-# One Heroku app name per line. Lines starting with # are ignored.
-# Example:
-# my-n8n-production
-# my-n8n-staging
-n8n-dansys-test-sandbox
+# One Heroku app name per line. Inline comments after # are shown in deploy status.
+dansys25                 # Berlin store
+dansys25-erfurt          # Erfurt store
+dansys25-flensburg       # Flensburg store
+n8n-dansys-test-sandbox  # For testing usage

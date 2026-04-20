@@ -14,15 +14,6 @@ If you have questions after trying the tutorials, check out the [forums](https:/
 
 ---
 
-## Branches
-
-| Branch | n8n image | Use when |
-|--------|-----------|----------|
-| `main` | `n8nio/n8n:2.16.1` (pinned) | Production — stable, explicit version |
-| `latest` | `n8nio/n8n:latest` | Tracking upstream automatically |
-
----
-
 ## Deploying to multiple Heroku apps
 
 ### Prerequisites
@@ -35,41 +26,39 @@ If you have questions after trying the tutorials, check out the [forums](https:/
 Add each Heroku app name (one per line) to `heroku-apps.txt`:
 
 ```
-my-n8n-production
-my-n8n-staging
+dansys25
+dansys25-erfurt
+dansys25-flensburg
+...
 ```
 
-Lines starting with `#` are treated as comments and ignored.
 
 ### 2. Run the deploy script
 
+**Check what's currently deployed across all apps:**
 ```bash
-./deploy.sh <app-name> [app-name ...]
+./deploy.sh status
+```
+```
+APP                                 N8N VERSION     DEPLOYED AT          BRANCH
+---                                 -----------     -----------          ------
+my-n8n-production                   2.17.3          2026-04-20 14:32     main
+my-n8n-staging                      (never deployed)
 ```
 
-The script:
-1. Validates every name you pass against `heroku-apps.txt` — typos or unknown apps abort before anything is pushed
-2. Pushes the **current branch** to each target app's `main` branch
-
-**Examples**
-
-Deploy to a single app:
+**Deploy to one or more apps:**
 ```bash
 ./deploy.sh my-n8n-production
-```
-
-Deploy to multiple apps at once:
-```bash
 ./deploy.sh my-n8n-production my-n8n-staging
 ```
 
-List all registered apps (run with no arguments):
-```bash
-./deploy.sh
-```
+The script:
+1. Validates every name against `heroku-apps.txt` — unknown apps abort before anything is pushed
+2. Pushes the **current branch** to each target app
+3. Creates/updates a git tag `deployed/<app-name>` on origin recording the n8n version, branch, and timestamp
 
 ### Notes
 
-- Heroku builds the container on their side using `heroku.yml`, so no local Docker is required.
-- Make sure you are on the correct branch (`main` for pinned, `latest` for tracking upstream) before running the script.
-- Each push triggers a fresh build and release on Heroku. You can monitor progress in the Heroku dashboard or via `heroku logs --tail --app <app-name>`.
+- Heroku builds the container on their side via `heroku.yml` — no local Docker needed.
+- Be on the correct branch (`main` for pinned stable, `latest` for tracking upstream) before deploying.
+- Monitor a deploy with `heroku logs --tail --app <app-name>`.
